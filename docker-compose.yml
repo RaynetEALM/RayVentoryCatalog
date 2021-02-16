@@ -1,0 +1,45 @@
+﻿version: "3.7"
+services:
+
+  mongo:
+    image: mongo:4
+    restart: always
+    volumes:
+      - db_data:/data/db
+      - db_config:/data/configdb
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        delay: 10s
+    ports:
+      - 27018:27017
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+      - MONGO_INITDB_ROOT_PASSWORD=Start123!@#
+      - MONGO_INITDB_DATABASE=raymaster
+      - MONGODB_ROOT_PASSWORD=Start123!@#
+  
+  web:
+    image: raynetnightly.azurecr.io/raynet/rayventory/catalog/nightly:latest
+    depends_on:
+      - mongo
+    restart: always
+    ports:
+      - 8080:80
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        delay: 10s
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+      - BASEURL=http://localhost:8080
+      - MongoConnectionString=mongodb://mongo
+      - MongoDatabaseName=raymaster
+      - MongoUserName=mongoadmin
+      - MongoPassword=Start123!@#
+
+volumes:
+  db_data:
+  db_config:
