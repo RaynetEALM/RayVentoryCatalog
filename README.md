@@ -32,8 +32,9 @@ The easiest way to run the image with reasonable default is to use `docker-compo
  3. In the folder containing the downloaded definition, run the following command: `docker-compose up -d`. 
  3. Login to [`http://localhost:8080`](http://localhost:8080) and use the following credentials:
 - Login: `root`
-- Password: `raynet`
- 4. Provide the valid license for the product.
+- Password: `root`
+ 5. Provide the valid license for the product.
+ 6. After log-in, change your root password and create application users.
 
 #### Environment Variables
 Catalog-related:
