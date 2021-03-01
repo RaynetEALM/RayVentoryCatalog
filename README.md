@@ -36,6 +36,12 @@ The easiest way to run the image with reasonable default is to use `docker-compo
  5. Provide the valid license for the product.
  6. After log-in, change your root password and create application users.
 
+ ##### The image #####
+RayVentory Catalog is available on docker hub:
+[`https://hub.docker.com/r/raynetgmbh/rayventory-catalog`](https://hub.docker.com/r/raynetgmbh/rayventory-catalog)
+
+You can use tags `12.2` (recommended) or `stable` to get the last 12.2 or the last stable version respectively.
+
 #### Environment Variables
 Catalog-related:
 * `BASEURL` - The base URL which will be used to access the app.

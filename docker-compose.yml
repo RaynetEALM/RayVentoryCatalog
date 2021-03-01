@@ -21,7 +21,7 @@ services:
       - MONGODB_ROOT_PASSWORD=Start123!@#
   
   web:
-    image: raynetnightly.azurecr.io/raynet/rayventory/catalog/nightly:latest
+    image: raynetgmbh/rayventory-catalog:stable
     depends_on:
       - mongo
     restart: always
