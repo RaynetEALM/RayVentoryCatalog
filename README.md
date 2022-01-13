@@ -40,7 +40,7 @@ The easiest way to run the image with reasonable default is to use `docker-compo
 RayVentory Catalog is available on docker hub:
 [`https://hub.docker.com/r/raynetgmbh/rayventory-catalog`](https://hub.docker.com/r/raynetgmbh/rayventory-catalog)
 
-You can use tags `12.2` (recommended) or `stable` to get the last 12.2 or the last stable version respectively.
+You can use tags `12.3` (recommended) or `stable` to get the last 12.3 or the last stable version respectively.
 
 #### Environment Variables
 Catalog-related:
