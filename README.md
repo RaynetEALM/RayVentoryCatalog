@@ -43,7 +43,9 @@ RayVentory Catalog is available on docker hub:
 You can use tags `12.5` (recommended) or `stable` to get the last 12.5 or the last stable version respectively.
 
 #### Environment Variables
-Catalog main web service:
+
+##### Catalog main web service #####
+
 * `BASEURL` - The base URL which will be used to access the app.
 * `MongoConnectionString` - The connection string for mongo database (by default set to the mongoDB created by `docker-compose`)
 * `MongoDatabaseName` - The name of the mongoDB database
@@ -51,27 +53,27 @@ Catalog main web service:
 * `MongoPassword` - The password used when connecting to the mongoDB
 * `Logging__LogLevel__Default` - The default logging level
 
-Database:
+##### Database #####
 * `ServiceConfig__MongoConfiguration__UserName` - The user name for mongo database
 * `ServiceConfig__MongoConfiguration__DatabaseName` - The database name for mongo database
 * `ServiceConfig__MongoConfiguration__Password` - The password for mongo database
 
-Massage queue:
+##### Message queue #####
 * `MessageQueue__HostName` - The host name of the message queue
 * `MessageQueue__QueuePrefix` - A string, used to prefix all queue objects
 * `MessageQueue__User` - The user for message queue
 * `MessageQueue__Password` - The password for message queue
 
-File storage
+##### File storage #####
 * `FileStorage__HostName` - The host name of the min.io service
 * `FileStorage__Bucket` - The name of the bucket
 * `FileStorage__User` - The user name
 * `FileStorage__Password` - The password
 * `FileStorage__Port` - The port
 
-* Worker-related
+##### Worker-related #####
 * `WorkerType` - Type of tasks that the given worker accepts (a single value or comma-separated list)
-
+  
 ## Find Us
 
 * [Raynet GmbH corporate website](https://raynet.de)
