@@ -1,4 +1,4 @@
-﻿version: "3.7"
+version: "3.7"
 services:
 
   mongo:
@@ -7,39 +7,156 @@ services:
     volumes:
       - db_data:/data/db
       - db_config:/data/configdb
-    deploy:
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
-        delay: 10s
     ports:
       - 27018:27017
     environment: 
       - MONGO_INITDB_ROOT_USERNAME=mongoadmin
-      - MONGO_INITDB_ROOT_PASSWORD=Start123!@#
+      - MONGO_INITDB_ROOT_Password=Start123
       - MONGO_INITDB_DATABASE=raymaster
-      - MONGODB_ROOT_PASSWORD=Start123!@#
-  
+      - MONGODB_ROOT_Password=Start123
+
+  minio:
+    image: minio/minio:RELEASE.2021-01-16T02-19-44Z
+    volumes:
+      - minio_storage:/container/vol
+    ports:
+     - "9001:9000"
+     - "9002:9001"
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: rvc
+      MINIO_ROOT_PASSWORD: Start123
+    command: server /container/vol
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping 
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    volumes:
+      - rmq_data:/var/lib/rabbitmq/
+      - rmq_log:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: rvc
+      RABBITMQ_DEFAULT_PASS: Start123
+
   web:
-    image: raynetgmbh/rayventory-catalog:stable
+    image: raynetnightly.azurecr.io/raynet/rayventory/catalog:12
     depends_on:
       - mongo
+      - minio
+      - rabbitmq
     restart: always
     ports:
       - 8080:80
+    volumes:
+      - catalog_license:/app/license
     deploy:
       restart_policy:
         condition: on-failure
         max_attempts: 3
         delay: 10s
     environment:
-      - VIRTUAL_HOST=${VIRTUAL_HOST}
       - BASEURL=http://localhost:8080
-      - MongoConnectionString=mongodb://mongo
-      - MongoDatabaseName=raymaster
-      - MongoUserName=mongoadmin
-      - MongoPassword=Start123!@#
+      - ServiceConfig__MongoConfiguration__ConnectionString=mongodb://mongo
+      - ServiceConfig__MongoConfiguration__DatabaseName=raymaster
+      - ServiceConfig__MongoConfiguration__UserName=mongoadmin
+      - ServiceConfig__MongoConfiguration__Password=Start123
+      - ServiceConfig__MongoConfiguration__AuthDatabaseName=admin
+      - MessageQueue__HostName=rabbitmq
+      - MessageQueue__QueuePrefix=rvc
+      - MessageQueue__User=rvc
+      - MessageQueue__Password=Start123
+      - FileStorage__HostName=minio
+      - FileStorage__Bucket=rvc
+      - FileStorage__Location=local
+      - FileStorage__User=rvc
+      - FileStorage__Password=Start123
+      - FileStorage__Port=9000
+      - Logging__LogLevel__Default=Information
+
+  worker-recognition:
+    image: raynetnightly.azurecr.io/raynet/rayventory/catalog-worker:12
+    depends_on:
+      - mongo
+      - minio
+      - rabbitmq
+      - web
+    restart: always
+    volumes:
+      - worker1_token:/app/tokens
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        delay: 10s
+    environment:
+      - WorkerType=recognition
+      - TokenStorage__FilePath=tokens/token.json
+      - MongoConfiguration__ConnectionString=mongodb://mongo
+      - MongoConfiguration__DatabaseName=raymaster
+      - MongoConfiguration__UserName=mongoadmin
+      - MongoConfiguration__Password=Start123
+      - MongoConfiguration__AuthDatabaseName=admin
+      - MessageQueue__HostName=rabbitmq
+      - MessageQueue__QueuePrefix=rvc
+      - MessageQueue__User=rvc
+      - MessageQueue__Password=Start123
+      - FileStorage__HostName=minio
+      - FileStorage__Bucket=rvc
+      - FileStorage__Location=local
+      - FileStorage__User=rvc
+      - FileStorage__Password=Start123
+      - FileStorage__Port=9000
+      - Logging__LogLevel__Default=Information
+      
+  worker-all:
+    image: raynetnightly.azurecr.io/raynet/rayventory/catalog-worker:12
+    depends_on:
+      - mongo
+      - minio
+      - rabbitmq
+      - web
+    restart: always
+    volumes:
+      - worker2_token:/app/tokens
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        delay: 10s
+    environment:
+      - WorkerType=cleanup applycustomattribute suggestions 
+      - TokenStorage__FilePath=tokens/token.json
+      - MongoConfiguration__ConnectionString=mongodb://mongo
+      - MongoConfiguration__DatabaseName=raymaster
+      - MongoConfiguration__UserName=mongoadmin
+      - MongoConfiguration__Password=Start123
+      - MongoConfiguration__AuthDatabaseName=admin
+      - MessageQueue__HostName=rabbitmq
+      - MessageQueue__QueuePrefix=rvc
+      - MessageQueue__User=rvc
+      - MessageQueue__Password=Start123
+      - FileStorage__HostName=minio
+      - FileStorage__Bucket=rvc
+      - FileStorage__Location=local
+      - FileStorage__User=rvc
+      - FileStorage__Password=Start123
+      - FileStorage__Port=9000
+      - Logging__LogLevel__Default=Information
 
 volumes:
   db_data:
   db_config:
+  worker1_token:
+  worker2_token:
+  rmq_data:
+  rmq_log:
+  minio_storage:
+  catalog_license:

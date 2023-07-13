@@ -18,9 +18,12 @@ In order to run this container you'll need docker installed.
 On Windows, make sure to use Linux Containers, WSL2 is recommended. 
 
 ### Usage
-The default configuration consists of two containers:
+The default configuration consists of the following containers:
 * A database powered by mongoDB
+* A message queue powered by RabbitMQ
+* A file storage powered by min.io
 * A container with frontend and backend for the catalog
+* A set of one or more workers
 
 The default configuration is standalone and should work out-of-the-box.
 
@@ -40,27 +43,42 @@ The easiest way to run the image with reasonable default is to use `docker-compo
 RayVentory Catalog is available on docker hub:
 [`https://hub.docker.com/r/raynetgmbh/rayventory-catalog`](https://hub.docker.com/r/raynetgmbh/rayventory-catalog)
 
-You can use tags `12.4` (recommended) or `stable` to get the last 12.4 or the last stable version respectively.
+You can use tags `12.5` (recommended) or `stable` to get the last 12.5 or the last stable version respectively.
 
 #### Environment Variables
-Catalog-related:
-* `BASEURL` - The base URL which will be used to access the app.
-* `MongoConnectionString` - The connection string for mongo database (by default set to the mongoDB created by `docker-compose`)
-* `MongoDatabaseName` - The name of the mongoDB database
-* `MongoUserName` - The user name used when connecting to the mongoDB
-* `MongoPassword` - The password used when connecting to the mongoDB
 
-Database related:
-* `MONGO_INITDB_ROOT_USERNAME` - The user name for mongo database
-* `MONGO_INITDB_ROOT_PASSWORD` - The password for mongo database
-* `MONGO_INITDB_DATABASE` - The database name for mongo database
-* `MONGODB_ROOT_PASSWORD` - The root password for mongo database
+##### Catalog main web service #####
+* `Logging__LogLevel__Default` - The default logging level
 
-#### Volumes
+#### Mongo database related settings ####
+* `ServiceConfig__MongoConfiguration__ConnectionString` - The connection string for mongo database (by default set to the mongoDB created by `docker-compose`)
+* `ServiceConfig__MongoConfiguration__DatabaseName` - The name of the mongoDB database
+* `ServiceConfig__MongoConfiguration__AuthDatabaseName` - The name of the mongoDB authentication database
+* `ServiceConfig__MongoConfiguration__UserName` - The user name used when connecting to the mongoDB
+* `ServiceConfig__MongoConfiguration__Password` - The password used when connecting to the mongoDB
+  
+Make sure that these value match with environment variables belonging to the database services, or that they are set-up to point to a service outside of the container set-up.
 
-* `db_data` - mongoDB data
-* `db_config` - mongoDB config
+##### Message queue related settings #####
+* `MessageQueue__HostName` - The host name of the message queue
+* `MessageQueue__QueuePrefix` - A string, used to prefix all queue objects
+* `MessageQueue__User` - The user for message queue
+* `MessageQueue__Password` - The password for message queue
 
+Make sure that these value match with environment variables belonging to the message queue services, or that they are set-up to point to a service outside of the container set-up.
+
+##### File storage related settings #####
+* `FileStorage__HostName` - The host name of the min.io service
+* `FileStorage__Bucket` - The name of the bucket
+* `FileStorage__User` - The user name
+* `FileStorage__Password` - The password
+* `FileStorage__Port` - The port
+
+Make sure that these value match with environment variables belonging to the file storage services, or that they are set-up to point to a service outside of the container set-up.
+
+##### Worker-related #####
+* `WorkerType` - Type of tasks that the given worker accepts (a single value or comma-separated list)
+  
 ## Find Us
 
 * [Raynet GmbH corporate website](https://raynet.de)
