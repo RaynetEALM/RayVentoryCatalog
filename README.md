@@ -49,6 +49,8 @@ You can use tags `12.5` (recommended) or `stable` to get the last 12.5 or the la
 
 ##### Catalog main web service #####
 * `Logging__LogLevel__Default` - The default logging level
+* `Synchronization__CachingJobCronExpression` - The cron expression that describe the schedule of caching task (use hyphen `-` to disable automatic startup of this task)
+* `Synchronization__AutoSyncJobCronExpression` - The cron expression that describe the schedule of synchronization task (use hyphen `-` to disable automatic startup of this task)
 
 #### Mongo database related settings ####
 * `ServiceConfig__MongoConfiguration__ConnectionString` - The connection string for mongo database (by default set to the mongoDB created by `docker-compose`)
@@ -64,12 +66,13 @@ Make sure that these value match with environment variables belonging to the dat
 * `MessageQueue__QueuePrefix` - A string, used to prefix all queue objects
 * `MessageQueue__User` - The user for message queue
 * `MessageQueue__Password` - The password for message queue
+* `MessageQueue__Port` - The port for message queue
 
 Make sure that these value match with environment variables belonging to the message queue services, or that they are set-up to point to a service outside of the container set-up.
 
 ##### File storage related settings #####
 * `FileStorage__HostName` - The host name of the min.io service
-* `FileStorage__Bucket` - The name of the bucket
+* `FileStorage__Bucket` - The name of the bucket (must be between 3 and 63 characters long and can consist only of lowercase letters, numbers, dots `.`, and hyphens `-`)
 * `FileStorage__User` - The user name
 * `FileStorage__Password` - The password
 * `FileStorage__Port` - The port
@@ -78,6 +81,7 @@ Make sure that these value match with environment variables belonging to the fil
 
 ##### Worker-related #####
 * `WorkerType` - Type of tasks that the given worker accepts (a single value or comma-separated list)
+* `Logging__LogLevel__Default` - The default logging level
   
 ## Find Us
 
