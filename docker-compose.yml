@@ -2,21 +2,26 @@ version: "3.7"
 services:
 
   mongo:
-    image: mongo:4
-    restart: always
+    image: mongo:7
+    restart: unless-stopped
     volumes:
       - db_data:/data/db
       - db_config:/data/configdb
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        delay: 10s
     ports:
       - 27018:27017
     environment: 
       - MONGO_INITDB_ROOT_USERNAME=mongoadmin
-      - MONGO_INITDB_ROOT_Password=Start123
+      - MONGO_INITDB_ROOT_PASSWORD=Start123
       - MONGO_INITDB_DATABASE=raymaster
-      - MONGODB_ROOT_Password=Start123
+      - MONGODB_ROOT_PASSWORD=Start123
 
   minio:
-    image: minio/minio:RELEASE.2021-01-16T02-19-44Z
+    image: minio/minio:RELEASE.2023-09-30T07-02-29Z
     volumes:
       - minio_storage:/container/vol
     ports:
@@ -26,7 +31,7 @@ services:
     environment:
       MINIO_ROOT_USER: rvc
       MINIO_ROOT_PASSWORD: Start123
-    command: server /container/vol
+    command: server /container/vol --console-address :9001
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -47,12 +52,12 @@ services:
       RABBITMQ_DEFAULT_PASS: Start123
 
   web:
-    image: raynetnightly.azurecr.io/raynet/rayventory/catalog:12
+    image: raynetgmbh/rayventory-catalog:12.5
     depends_on:
       - mongo
       - minio
       - rabbitmq
-    restart: always
+    restart: unless-stopped
     ports:
       - 8080:80
     volumes:
@@ -79,16 +84,15 @@ services:
       - FileStorage__User=rvc
       - FileStorage__Password=Start123
       - FileStorage__Port=9000
-      - Logging__LogLevel__Default=Information
 
   worker-recognition:
-    image: raynetnightly.azurecr.io/raynet/rayventory/catalog-worker:12
+    image: raynetgmbh/rayventory-catalog-worker:12.5
     depends_on:
       - mongo
       - minio
       - rabbitmq
       - web
-    restart: always
+    restart: unless-stopped
     volumes:
       - worker1_token:/app/tokens
     deploy:
@@ -114,16 +118,15 @@ services:
       - FileStorage__User=rvc
       - FileStorage__Password=Start123
       - FileStorage__Port=9000
-      - Logging__LogLevel__Default=Information
       
-  worker-all:
-    image: raynetnightly.azurecr.io/raynet/rayventory/catalog-worker:12
+  worker-other:
+    image: raynetgmbh/rayventory-catalog-worker:12.5
     depends_on:
       - mongo
       - minio
       - rabbitmq
       - web
-    restart: always
+    restart: unless-stopped
     volumes:
       - worker2_token:/app/tokens
     deploy:
@@ -149,7 +152,6 @@ services:
       - FileStorage__User=rvc
       - FileStorage__Password=Start123
       - FileStorage__Port=9000
-      - Logging__LogLevel__Default=Information
 
 volumes:
   db_data:
