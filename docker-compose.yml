@@ -52,7 +52,7 @@ services:
       RABBITMQ_DEFAULT_PASS: Start123
 
   web:
-    image: raynetgmbh/rayventory-catalog:12.5
+    image: raynetgmbh/rayventory-catalog:12.6
     depends_on:
       - mongo
       - minio
@@ -86,7 +86,7 @@ services:
       - FileStorage__Port=9000
 
   worker-recognition:
-    image: raynetgmbh/rayventory-catalog-worker:12.5
+    image: raynetgmbh/rayventory-catalog-worker:12.6
     depends_on:
       - mongo
       - minio
@@ -120,7 +120,7 @@ services:
       - FileStorage__Port=9000
       
   worker-other:
-    image: raynetgmbh/rayventory-catalog-worker:12.5
+    image: raynetgmbh/rayventory-catalog-worker:12.6
     depends_on:
       - mongo
       - minio
