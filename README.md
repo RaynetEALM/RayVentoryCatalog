@@ -1,9 +1,9 @@
 
-# RayVentory Catalog
+# Raynet One Technology Catalog
 ###  The software catalog with added value
-In RayVentory Catalog, inventoried raw data is assigned to applications using AI-powered software recognition and then presented in prepared reports.
+In Raynet One Technology Catalog, inventoried raw data is assigned to applications using AI-powered software recognition and then presented in prepared reports.
 
-![Screenshot](catalog.png)
+![Screenshot](catalog-14.png)
 
 ## Getting Started
 These instructions will cover usage information and for the docker container 
@@ -40,7 +40,7 @@ The easiest way to run the image with reasonable default is to use `docker-compo
  6. After log-in, change your root password and create application users.
 
  ##### The image #####
-RayVentory Catalog is available on docker hub:
+Raynet One Technology Catalog is available on docker hub:
 [`https://hub.docker.com/r/raynetgmbh/rayventory-catalog`](https://hub.docker.com/r/raynetgmbh/rayventory-catalog)
 
 You can use tags `14.0` (recommended) or `stable` to get the last 14.0 or the last stable version respectively.
