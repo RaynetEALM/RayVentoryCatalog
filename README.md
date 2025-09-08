@@ -39,11 +39,12 @@ The easiest way to run the image with reasonable default is to use `docker-compo
  5. Provide the valid license for the product.
  6. After log-in, change your root password and create application users.
 
- ##### The image #####
-Raynet One Technology Catalog is available on docker hub:
-[`https://hub.docker.com/r/raynetgmbh/rayventory-catalog`](https://hub.docker.com/r/raynetgmbh/rayventory-catalog)
+##### The image #####
+Raynet One Technology Catalog is available on Docker registries:
+* Raynet: [`raynetpublic.azurecr.io/raynetone/technology-catalog`]
+* Docker Hub: [`[https://hub.docker.com/r/raynetgmbh/rayventory-catalog]`](https://hub.docker.com/r/raynetgmbh/rayventory-catalog)
 
-You can use tags `14.0` (recommended) or `stable` to get the last 14.0 or the last stable version respectively.
+You can use tags `25.3` (recommended) or `stable` to get the last 2025.3 or the last stable version respectively.
 
 #### Environment Variables
 
@@ -53,12 +54,22 @@ You can use tags `14.0` (recommended) or `stable` to get the last 14.0 or the la
 * `Synchronization__AutoSyncJobCronExpression` - The cron expression that describe the schedule of synchronization task (use hyphen `-` to disable automatic startup of this task)
 
 #### Mongo database related settings ####
-* `ServiceConfig__MongoConfiguration__ConnectionString` - The connection string for mongo database (by default set to the mongoDB created by `docker-compose`)
-* `ServiceConfig__MongoConfiguration__DatabaseName` - The name of the mongoDB database
-* `ServiceConfig__MongoConfiguration__AuthDatabaseName` - The name of the mongoDB authentication database
-* `ServiceConfig__MongoConfiguration__UserName` - The user name used when connecting to the mongoDB
-* `ServiceConfig__MongoConfiguration__Password` - The password used when connecting to the mongoDB
+* `ServiceConfig__MongoConfiguration__ConnectionString` - The connection string for mongo database (by default set to the MongoDB created by `docker-compose`)
+* `ServiceConfig__MongoConfiguration__DatabaseName` - The name of the MongoDB database
+* `ServiceConfig__MongoConfiguration__AuthDatabaseName` - The name of the MongoDB authentication database
+* `ServiceConfig__MongoConfiguration__UserName` - The user name used when connecting to the MongoDB
+* `ServiceConfig__MongoConfiguration__Password` - The password used when connecting to the MongoDB
+* `ServiceConfig__MongoConfiguration__UseTls` - Specifies whether to use TLS for secure communication with the MongoDB server.
+* `ServiceConfig__MongoConfiguration__AllowInsecureTls` - Determines whether to allow connections over TLS with certificates that cannot be verified.
+* `ServiceConfig__MongoConfiguration__CheckCertificateRevocation` - Indicates whether to check for certificate revocation status during TLS handshake.
+* `ServiceConfig__MongoConfiguration__CertPemFilePath` - The file path to the SSL certificate and key. 
+* `ServiceConfig__MongoConfiguration__CertCaFilePath` - The file path to the certificate authority (CA) file. 
+* `ServiceConfig__MongoConfiguration__ReplicaSetName` - The name of the replica set in MongoDB.
   
+Both the Web and Worker services support environment variables for configuring MongoDB. However, there's a slight difference in how you should prefix the MongoDB configuration variables for each module:
+* For Web service `ServiceConfig__MongoConfiguration__` (for example: `ServiceConfig__MongoConfiguration__ConnectionString`)
+* For Worker service `MongoConfiguration__` (for example: `MongoConfiguration__ConnectionString`)
+
 Make sure that these value match with environment variables belonging to the database services, or that they are set-up to point to a service outside of the container set-up.
 
 ##### Message queue related settings #####
@@ -79,11 +90,14 @@ Make sure that these value match with environment variables belonging to the mes
 
 Make sure that these value match with environment variables belonging to the file storage services, or that they are set-up to point to a service outside of the container set-up.
 
+##### Application search related settings #####
+* `OpenSearch__Urls` - The list of OpenSearch hosts
+
 ##### Worker-related #####
 * `WorkerType` - Type of tasks that the given worker accepts (a single value or comma-separated list)
 * `Logging__LogLevel__Default` - The default logging level
   
 ## Find Us
-
+* [Raynet GmbH on Docker Hub](https://hub.docker.com/u/raynetgmbh)
 * [Raynet GmbH corporate website](https://raynet.de)
 * [Raynet EALM GitHub](https://github.com/raynetEALM)
