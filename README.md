@@ -1,7 +1,7 @@
 
-# RayVentory Catalog
+# Raynet One Technology Catalog
 ###  The software catalog with added value
-In RayVentory Catalog, inventoried raw data is assigned to applications using AI-powered software recognition and then presented in prepared reports.
+In Raynet One Technology Catalog, inventoried raw data is assigned to applications using AI-powered software recognition and then presented in prepared reports.
 
 ![Screenshot](catalog.png)
 
@@ -40,10 +40,11 @@ The easiest way to run the image with reasonable default is to use `docker-compo
  6. After log-in, change your root password and create application users.
 
  ##### The image #####
-RayVentory Catalog is available on docker hub:
-[`https://hub.docker.com/r/raynetgmbh/rayventory-catalog`](https://hub.docker.com/r/raynetgmbh/rayventory-catalog)
+Raynet One Technology Catalog is available on Docker registries:
+* Raynet: [`raynetpublic.azurecr.io/raynetone/technology-catalog`]
+* Docker Hub: [`[https://hub.docker.com/r/raynetgmbh/rayventory-catalog]`](https://hub.docker.com/r/raynetgmbh/rayventory-catalog)
 
-You can use tags `12.5` (recommended) or `stable` to get the last 12.5 or the last stable version respectively.
+You can use tags `25.3` (recommended) or `stable` to get the last 2025.3 or the last stable version respectively.
 
 #### Environment Variables
 
@@ -79,11 +80,14 @@ Make sure that these value match with environment variables belonging to the mes
 
 Make sure that these value match with environment variables belonging to the file storage services, or that they are set-up to point to a service outside of the container set-up.
 
+##### Application search related settings #####
+* `OpenSearch__Urls` - The list of OpenSearch hosts
+
 ##### Worker-related #####
 * `WorkerType` - Type of tasks that the given worker accepts (a single value or comma-separated list)
 * `Logging__LogLevel__Default` - The default logging level
   
 ## Find Us
-
+* [Raynet GmbH on Docker Hub](https://hub.docker.com/u/raynetgmbh)
 * [Raynet GmbH corporate website](https://raynet.de)
 * [Raynet EALM GitHub](https://github.com/raynetEALM)
